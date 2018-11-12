@@ -1,0 +1,1 @@
+nasm -f bin -o build/graviton.com src/main.asm
