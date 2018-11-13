@@ -90,16 +90,13 @@ yield:
 
 task_a:
 .loop_forever_1:
-    ;mov bx, 100
-    ;mov cx, 0x1    
-    ;mov     [es:bx], cx             ; write to screen
-	;lea     di, [task_a_str]
-	;call    putstring
     mov ax, 0x0C8F
     mov bx, 0x0
-    mov cx, 0x10
-    mov dx, 0x10
+	mov cx, [rect_a_x]
+    mov dx, 0x0
     int 0x10
+
+	inc word [rect_a_x]
 
 	call    yield
 	jmp     .loop_forever_1
@@ -107,13 +104,13 @@ task_a:
 
 task_b:
 .loop_forever_2:
-	;lea     di, [task_b_str]
-	;call    putstring
     mov ax, 0x0C73
     mov bx, 0x0
-    mov cx, 0x40
-    mov dx, 0x35
+	mov cx, [rect_b_x]
+    mov dx, 100
     int 0x10
+
+	inc word [rect_b_x]
 
 	call    yield
 	jmp     .loop_forever_2
@@ -144,9 +141,8 @@ putstring:
 	ret
 
 SECTION .data
-	task_main_str: db "I am task MAIN", 13, 10, 0
-	task_a_str: db "I am task A", 13, 10, 0
-	task_b_str: db "I am task B", 13, 10, 0
+	rect_a_x: dw 0
+	rect_b_x: dw 0
 
 	current_task: dw 0 ; must always be a multiple of 2
 	stacks: times (256 * 31) db 0 ; 31 fake stacks of size 256 bytes
