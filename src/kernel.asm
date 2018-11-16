@@ -1,13 +1,18 @@
 bits 16
 
-org 0x100
+org 0
 
 ;macro to check stack for threads params: 
 
 SECTION .text
 main:
+	;jmp main
+
     mov ax, 0x13
     int 0x10
+
+	mov ax, 0x800
+	mov ds, ax
 
 	mov     byte [task_status], 1               ; set main task to active
 
@@ -90,6 +95,11 @@ yield:
 
 task_a:
 .loop_forever_1:
+	;mov     ax, 0xA000
+	;mov     es, ax
+	;mov     cx, 0x0C8F            ; color
+	;mov     [es:bx], cx
+
     mov ax, 0x0C8F
     mov bx, 0x0
 	mov cx, [rect_a_x]
@@ -118,27 +128,27 @@ task_b:
 
 ; takes a char to print in dx
 ; no return value
-putchar:
-	mov     ax, dx          ; call interrupt x10 sub interrupt xE
-	mov     ah, 0x0E
-	mov     cx, 1
-	int     0x10
-	ret
+; putchar:
+; 	mov     ax, dx          ; call interrupt x10 sub interrupt xE
+; 	mov     ah, 0x0E
+; 	mov     cx, 1
+; 	int     0x10
+; 	ret
 
 ;takes an address to write to in di
 ;writes to address until a newline is encountered
 ;returns nothing
-putstring:
-	cmp     byte [di], 0        ; see if the current byte is a null terminator
-	je     	.done 				; nope keep printing
-.continue:
-	mov     dl, [di]            ; grab the next character of the string
-	mov     dh, 0               ; print it
-	call    putchar
-	inc     di                  ; move to the next character
-	jmp     putstring
-.done:
-	ret
+; putstring:
+; 	cmp     byte [di], 0        ; see if the current byte is a null terminator
+; 	je     	.done 				; nope keep printing
+; .continue:
+; 	mov     dl, [di]            ; grab the next character of the string
+; 	mov     dh, 0               ; print it
+; 	call    putchar
+; 	inc     di                  ; move to the next character
+; 	jmp     putstring
+; .done:
+; 	ret
 
 SECTION .data
 	rect_a_x: dw 0
