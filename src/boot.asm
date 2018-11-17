@@ -41,7 +41,7 @@ main:
     .load_disk:
     mov ax, ss
     mov es, ax
-    mov ax, 0x201
+    mov ax, 0x203
     mov cx, 0x2
     xor dx, dx
     mov dl, [boot_disk]

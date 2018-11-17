@@ -155,11 +155,11 @@ SECTION .data
 	rect_b_x: dw 0
 
 	current_task: dw 0 ; must always be a multiple of 2
-	stacks: times (256 * 31) db 0 ; 31 fake stacks of size 256 bytes
-	task_status: times 32 dw 0 ; 0 means inactive, 1 means active
+	stacks: times (256 * 4) db 0 ; 31 fake stacks of size 256 bytes
+	task_status: times 5 dw 0 ; 0 means inactive, 1 means active
 	stack_pointers: dw 0 ; the first pointer needs to be to the real stack !
                 %assign i 1
-                %rep    31
+                %rep    4
                     dw stacks + (256 * i)
                 %assign i i+1
                 %endrep
